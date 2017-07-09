@@ -6,10 +6,20 @@ import (
 )
 
 func main() {
-	args := os.Args[1:]
-	if len(args) == 0 {
+	appArgs := os.Args[1:]
+	if len(appArgs) == 0 {
 		printHelp()
 		os.Exit(0)
+	}
+
+	command := appArgs[0]
+	//commandOps := appArgs[1:]
+	switch command {
+	case "ls":
+		fmt.Println("vms ls ls ls vms ls lslsls")
+
+	default:
+		fmt.Printf("Error: Unknown command %s\n", command)
 	}
 }
 
