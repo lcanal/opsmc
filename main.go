@@ -25,8 +25,9 @@ func main() {
 	case "ls":
 		ec2service := ec2.New(session)
 		vms := commands.ListVMs(ec2service)
+		fmt.Printf("Have %d VMs running\n", len(vms))
 		for _, vm := range vms {
-			fmt.Printf("VMs obtained: %s w ip %s\n", vm.Name, vm.IP)
+			fmt.Printf("ID: %-30s %-30s %-20s\n", vm.ID, vm.IP, vm.DNSName)
 		}
 	default:
 		fmt.Printf("Error: Unknown command %s\n", command)
