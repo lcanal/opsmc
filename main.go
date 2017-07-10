@@ -51,6 +51,7 @@ func printHelp() {
 	fmt.Printf("%-20s%5s", " ls", "List your currently running EC2 instances\n")
 	fmt.Printf("%-20s%5s", " mk", "Make a new EC2 instance\n")
 	fmt.Printf("%-20s%5s", " rm", "Remove a specific AWS EC2 instance.\n")
+	fmt.Printf("%-20s%5s", " updates", "Update all packages on specific hosts.\n")
 }
 
 func initAWSSession(region string) *session.Session {
@@ -63,7 +64,7 @@ func initAWSSession(region string) *session.Session {
 	})
 
 	if err != nil {
-		log.Fatalf("Error initializing session: %e", err)
+		log.Fatalf("Error initializing session: %s", err.Error())
 	}
 
 	return sess

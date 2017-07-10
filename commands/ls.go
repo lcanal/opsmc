@@ -24,7 +24,7 @@ func ListVMs(service *ec2.EC2) []vm.VM {
 	resp, err := service.DescribeInstances(params)
 
 	if err != nil {
-		log.Fatalf("There was an error listing instances in %e", err)
+		log.Fatalf("There was an error listing instances in %s", err.Error())
 	}
 
 	for idx := range resp.Reservations {
