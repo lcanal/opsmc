@@ -27,7 +27,7 @@ func RunUpdates(vms []vm.VM) {
 			return
 		}
 
-		modes := ssh.TerminalModes{
+		/*modes := ssh.TerminalModes{
 			ssh.ECHO:          0,     //Disable echoing
 			ssh.TTY_OP_ISPEED: 14400, // input speed = 14.4kbaud
 			ssh.TTY_OP_OSPEED: 14400, // output speed = 14.4kbaud
@@ -35,13 +35,15 @@ func RunUpdates(vms []vm.VM) {
 		if err := session.RequestPty("xterm", 80, 40, modes); err != nil {
 			session.Close()
 			fmt.Printf("Request for pseudo terminal failed: %s", err.Error())
-		}
+		}*/
 
-		updateError := session.Run("sudo yum -y update")
-		if updateError != nil {
-			fmt.Printf("Error running yum updates: %s", updateError.Error())
+		updateOutput, err := session.Output("sudo yum -y update")
+		if err != nil {
+			fmt.Printf("Error running yum updates: %s", err.Error())
 			return
 		}
+
+		fmt.Printf("Output from host: %s\n%v", vm.DNSName, string(updateOutput[:]))
 	}
 }
 
