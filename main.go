@@ -7,6 +7,8 @@ import (
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
+	"github.com/aws/aws-sdk-go/service/ec2"
+	"github.com/lcanal/opsmc/commands"
 )
 
 func main() {
@@ -16,14 +18,16 @@ func main() {
 		os.Exit(0)
 	}
 
-	//session := initAWSSession("us-east-1")
+	session := initAWSSession("us-east-1")
 	command := appArgs[0]
 
 	switch command {
 	case "ls":
-		//ec2Service := ec2.New(session)
-		fmt.Println("LS LS RUNNING LS")
-		//listofVMS := command.listVMS()
+		ec2service := ec2.New(session)
+		vms := commands.ListVMs(ec2service)
+		for _, vm := range vms {
+			fmt.Printf("VMs obtained: %s w ip %s\n", vm.Name, vm.IP)
+		}
 	default:
 		fmt.Printf("Error: Unknown command %s\n", command)
 	}

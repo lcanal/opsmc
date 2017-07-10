@@ -7,8 +7,3 @@ type VM struct {
 	ID   string
 	IP   string
 }
-
-func (vm VM) listVMs() VM {
-	myVM := VM{"MyName", "MyType", "MyID", "MyIP"}
-	return myVM
-}
