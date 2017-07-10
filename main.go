@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -12,22 +13,30 @@ import (
 )
 
 func main() {
-	appArgs := os.Args[1:]
-	if len(appArgs) == 0 {
+	var isQuiet bool
+	flag.BoolVar(&isQuiet, "q", false, "Only print VIM ids, suitable to pipe into another program or this program.")
+	flag.Parse()
+	command := flag.Arg(0)
+	if flag.NArg() == 0 {
 		printHelp()
 		os.Exit(0)
 	}
 
 	session := initAWSSession("us-east-1")
-	command := appArgs[0]
 
 	switch command {
 	case "ls":
 		ec2service := ec2.New(session)
 		vms := commands.ListVMs(ec2service)
-		fmt.Printf("Have %d VMs running\n", len(vms))
+		if !isQuiet {
+			fmt.Printf("Have %d VMs running\n", len(vms))
+		}
 		for _, vm := range vms {
-			fmt.Printf("ID: %-30s %-30s %-20s\n", vm.ID, vm.IP, vm.DNSName)
+			if isQuiet {
+				fmt.Println(vm.ID)
+			} else {
+				fmt.Printf("ID: %-30s %-30s %-20s\n", vm.ID, vm.IP, vm.DNSName)
+			}
 		}
 	default:
 		fmt.Printf("Error: Unknown command %s\n", command)
@@ -56,4 +65,8 @@ func initAWSSession(region string) *session.Session {
 	}
 
 	return sess
+}
+
+func appUsage() {
+	fmt.Printf("")
 }
